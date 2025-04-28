@@ -1,0 +1,45 @@
+from collections import deque
+
+# Define a graph node
+class Node:
+    def __init__(self):
+        self.adj = []
+
+# Parallel DFS simulation (no true parallelism, normal stack-based DFS)
+def parallel_dfs(graph, start_node, n):
+    visited = [0] * n
+    stack = []
+    stack.append(start_node)
+    visited[start_node] = 1
+
+    print(f"DFS starting from node {start_node}: ", end="")
+
+    while stack:
+        node = stack.pop()
+        print(node, end=" ")
+
+        # Traverse neighbors (standard loop, no parallelism here)
+        for neighbor in graph[node].adj:
+            if not visited[neighbor]:
+                visited[neighbor] = 1
+                stack.append(neighbor)
+    print()
+
+def main():
+    n = 7  # Total number of nodes
+    graph = [Node() for _ in range(n)]
+
+    # Define adjacency lists
+    graph[0].adj = [1, 2]
+    graph[1].adj = [0, 3]
+    graph[2].adj = [0, 4, 6]
+    graph[3].adj = [1, 5]
+    graph[4].adj = [2]
+    graph[5].adj = [3]
+    graph[6].adj = [2]
+
+    # Start DFS from node 0
+    parallel_dfs(graph, 0, n)
+
+if __name__ == "__main__":
+    main()

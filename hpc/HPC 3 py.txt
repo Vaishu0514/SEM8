@@ -1,0 +1,68 @@
+import numpy as np
+
+def min_reduction(arr):
+    min_value = np.min(arr)
+    print(f"Minimum value: {min_value}")
+
+def max_reduction(arr):
+    max_value = np.max(arr)
+    print(f"Maximum value: {max_value}")
+
+def sum_reduction(arr):
+    total = np.sum(arr)
+    print(f"Sum: {total}")
+
+def average_reduction(arr):
+    average = np.mean(arr)
+    print(f"Average: {average}")
+
+def display_array(arr):
+    print("Array elements are:", arr)
+
+def main():
+    try:
+        n = int(input("\nEnter total number of elements => "))
+        if n <= 0:
+            print("Number of elements must be positive!")
+            return
+        
+        arr = []
+        print("\nEnter elements =>")
+        for i in range(n):
+            val = int(input(f"Element {i+1}: "))
+            arr.append(val)
+        
+        arr = np.array(arr)
+        
+        while True:
+            print("\n--- Menu ---")
+            print("1. Find Minimum")
+            print("2. Find Maximum")
+            print("3. Find Sum")
+            print("4. Find Average")
+            print("5. Display Array")
+            print("6. Exit")
+            
+            choice = input("Enter your choice (1-6): ")
+            
+            if choice == '1':
+                min_reduction(arr)
+            elif choice == '2':
+                max_reduction(arr)
+            elif choice == '3':
+                sum_reduction(arr)
+            elif choice == '4':
+                average_reduction(arr)
+            elif choice == '5':
+                display_array(arr)
+            elif choice == '6':
+                print("Exiting the program. Goodbye!")
+                break
+            else:
+                print("Invalid choice! Please select a number between 1 and 6.")
+
+    except ValueError:
+        print("Invalid input! Please enter numeric values only.")
+
+if __name__ == "__main__":
+    main()

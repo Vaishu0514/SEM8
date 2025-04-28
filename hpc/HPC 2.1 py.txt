@@ -1,0 +1,66 @@
+import time
+import threading
+
+def swap(a, i, j):
+    a[i], a[j] = a[j], a[i]
+
+def sequential_bubble_sort(a):
+    n = len(a)
+    for i in range(n):
+        swapped = False
+        for j in range(n - 1):
+            if a[j] > a[j + 1]:
+                swap(a, j, j + 1)
+                swapped = True
+        if not swapped:
+            break
+
+def parallel_bubble_sort(a):
+    n = len(a)
+    for i in range(n):
+        swapped = [False]
+
+        def compare_and_swap(start):
+            for j in range(start, n - 1, 2):
+                if a[j] > a[j + 1]:
+                    swap(a, j, j + 1)
+                    swapped[0] = True
+
+        first = i % 2
+        t = threading.Thread(target=compare_and_swap, args=(first,))
+        t.start()
+        t.join()
+
+        if not swapped[0]:
+            break
+
+def main():
+    n = int(input("Enter total number of elements => "))
+    a = []
+    print("Enter elements =>")
+    for _ in range(n):
+        a.append(int(input()))
+
+    # Sequential Bubble Sort
+    start_time = time.time()
+    sequential_bubble_sort(a.copy())
+    end_time = time.time()
+
+    print("\nSorted array (Sequential) =>")
+    for num in a:
+        print(num)
+    print(f"Time taken by sequential algorithm: {end_time - start_time:.6f} seconds")
+
+    # Parallel Bubble Sort
+    a_parallel = a.copy()  # Use the already sorted array
+    start_time = time.time()
+    parallel_bubble_sort(a_parallel)
+    end_time = time.time()
+
+    print("\nSorted array (Parallel) =>")
+    for num in a_parallel:
+        print(num)
+    print(f"Time taken by parallel algorithm: {end_time - start_time:.6f} seconds")
+
+if __name__ == "__main__":
+    main()

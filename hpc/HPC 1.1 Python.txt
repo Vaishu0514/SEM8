@@ -1,0 +1,45 @@
+from collections import deque
+
+# Define a graph node
+class Node:
+    def __init__(self):
+        self.adj = []
+
+# Parallel BFS simulation (note: no true parallelism for simplicity)
+def parallel_bfs(graph, start_node, n):
+    visited = [0] * n
+    q = deque()
+    q.append(start_node)
+    visited[start_node] = 1
+
+    print(f"BFS starting from node {start_node}: ", end="")
+
+    while q:
+        node = q.popleft()
+        print(node, end=" ")
+
+        # Traverse neighbors (in a normal loop — Python's GIL limits true parallel threads)
+        for neighbor in graph[node].adj:
+            if not visited[neighbor]:
+                visited[neighbor] = 1
+                q.append(neighbor)
+    print()
+
+def main():
+    n = 7  # Total number of nodes
+    graph = [Node() for _ in range(n)]
+
+    # Define adjacency lists
+    graph[0].adj = [1, 2]
+    graph[1].adj = [0, 3]
+    graph[2].adj = [0, 4, 6]
+    graph[3].adj = [1, 5]
+    graph[4].adj = [2]
+    graph[5].adj = [3]
+    graph[6].adj = [2]
+
+    # Start BFS from node 0
+    parallel_bfs(graph, 0, n)
+
+if __name__ == "__main__":
+    main()
